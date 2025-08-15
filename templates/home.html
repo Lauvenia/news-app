@@ -1,0 +1,8 @@
+{% extends 'base.html' %} 
+{% block content %}
+<h2>Homepage</h2>
+<p>
+  Welcome {% if request.user.is_authenticated %} {{request.user.username }} {% else %} !{% endif %} to Newletter Application
+</p>
+
+{% endblock %}

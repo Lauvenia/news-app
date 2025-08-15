@@ -1,0 +1,34 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+<span>
+    <small> Author:</small> {{ article.author}}
+</span>
+<span><small> Status:</small>
+    {% if article.is_approved %} APPROVED {% else %} NOT-APPROVED {% endif %}
+</span>
+
+<hr/>
+<main>
+    {{ article.content |linebreaks }}
+</main>
+
+{% if request.user.role == 'editor' or request.user == article.author %}
+<button><a href="{% url 'article_update' pk=article.pk %}">Edit Article</a></button>
+{% endif %}
+
+{% if request.user.role == 'editor' %}
+<button><a href="{% url 'approve' pk=article.pk %}">Approve Article</a></button>
+{% endif %}
+
+{% if request.user.role == 'reader' %}
+    {% if article.author not in request.user.subscribed_journalists.all %}
+        <button><a href="{% url 'subscribe_to_journalist' pk=article.author.pk %}">Subscribe to journalist</a></button>
+    {% endif %}
+    {% if article.publisher and article.publisher not in request.user.subscribed_publishers.all %}
+        <button><a href="{% url 'subscribe_to_publisher' pk=article.publisher.pk %}">Subscribe to publisher</a></button>
+    {% endif %}
+{% endif %}
+
+{% endblock %}
+

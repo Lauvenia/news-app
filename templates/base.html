@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <h1>Lau Store</h1>
+    <a href="{% url 'home' %}">Home</a>
+    {% if request.user.role != "reader" %}  
+      {% comment %} Add button to select publisher {% endcomment %}
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    Logged in as: {{ request.user.username }}
+    <button><a href="{% url 'dashboard' %}">DashBoard</a></button>
+    <form action="{% url 'logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
+    {% else %}
+    <a href="{% url 'signup' %}">Signup</a>
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+    <hr />
+    {% block content %} {% endblock%}
+  </body>
+</html>

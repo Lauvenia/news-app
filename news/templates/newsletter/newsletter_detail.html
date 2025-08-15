@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>
+    {{ newsletter.title }}
+</h2>
+</span>
+
+<hr/>
+<main>
+    {{ newsletter.content |linebreaks }}
+</main>
+
+{% if request.user.role == 'editor' or request.user.role == 'journalist' %}
+<button><a href="{% url 'newsletter_update' pk=newsletter.pk %}">Edit Newletter</a></button>
+{% endif %}
+
+<small>Created_ {{ newsletter.created_at }}</small>
+{% endblock%}

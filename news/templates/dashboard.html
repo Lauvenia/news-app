@@ -1,0 +1,71 @@
+{% extends 'base.html' %} 
+{% block content %}
+<h2> Articles List</h2>
+{% if request.user.role != "reader" %}
+<button><a href="{% url 'create_article' %}">Add Article</a></button>
+{% endif %}
+
+<ul>
+    {% for article in articles %}
+    <li>
+        <a href="{% url 'article_detail' pk=article.pk %}">
+            {{ article.title }}
+        </a><br/>
+        <small>By {{ article.author }}</small>
+        <br/>
+        <small>Created_ {{ article.created_at }}</small>
+        {% if request.user.role == "journalist" and article.author == request.user or request.user.role == "editor" %}
+        <button><a href="{% url 'article_update' pk=article.pk %}">Edit Article</a></button>
+        <button><a href="{% url 'delete_article' pk=article.pk %}">Delete Article</a></button>
+        {% endif %}
+        {% empty %}
+        <li>No articles found</li>
+    {% endfor %}
+    </li>
+</ul>
+
+<br/>
+<h2>Newsletters List</h2>
+{% if request.user.role != "reader" %}
+<button><a href="{% url 'create_newsletter' %}">Add newsletter</a></button>
+{% endif %}
+<ul>
+    {% for newsletter in newsletters %}
+    <li>
+        <a href="{% url 'newsletter_detail' pk=newsletter.pk %}">
+            {{ newsletter.title}}
+        </a><br/>
+        <small>By {{ newsletter.author }}</small>
+        <br/>
+        <small>Created_ {{ newsletter.created_at }}</small>
+        {% if request.user.role == "journalist" or request.user.role == "editor" %}
+        <button><a href="{% url 'newsletter_update' pk=newsletter.pk %}">Edit newsletter</a></button>
+        <button><a href="{% url 'delete_newsletter' pk=newsletter.pk %}">Delete newsletter</a></button>
+        {% endif %}
+    </li>
+    {% empty %}
+        <li>No newsletters found</li>
+    {% endfor %}
+</ul>
+
+
+{% if journalists %}
+    <h3>Your subscribed journalists</h3>
+    {% for journalist in journalists %}
+        <ul>
+            <li>{{ journalist.username }}</li>
+        </ul>
+    {% endfor %}
+{% endif %}
+
+{% if publishers %}
+    <h3>Your subscribed publishers</h3>
+    {% for publisher in publishers %}
+        <ul>
+            <li>{{ publisher.name }}</li>
+        </ul>
+    {% endfor %}
+{% endif %}
+
+
+{% endblock %}
