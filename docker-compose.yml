@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mariadb:11
+    container_name: news_mariadb
+    restart: unless-stopped
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_RANDOM_ROOT_PASSWORD: yes
+    ports:
+      - "3306:3306"
+  
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: django_web
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    command: sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  data:

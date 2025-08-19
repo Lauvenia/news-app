@@ -89,11 +89,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "news_db",
-        "USER": "news_user",
-        "PASSWORD": "password",
-        "HOST": "localhost",
-        "PORT": "3306",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT", default="3306"),
         "TEST": {
             "MIRROR": "default",
         },
