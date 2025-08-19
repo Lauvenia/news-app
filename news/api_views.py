@@ -14,6 +14,7 @@ from .serializers import ArticleSerializer
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def api_article_list(request):
+    """API view to return the serialized Article objects."""
     if request.method == "GET":
         articles = Article.objects.all()
         serializer = ArticleSerializer(articles, many=True)

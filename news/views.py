@@ -10,11 +10,13 @@ from .models import Article, Newsletter, Publisher
 
 @login_required  # Ensures only logged-in users can access this view
 def home(request):
+    """Renders the home.html template."""
     return render(request, "home.html")
 
 
 @login_required  # Ensures only logged-in users can access this view
 def create_article(request):
+    """Allows users with the journalist role to create articles."""
     if request.user.role == "journalist":
 
         # If the request is a POST, it means the form was submitted
